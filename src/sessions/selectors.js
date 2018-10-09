@@ -11,6 +11,12 @@ class Selectors {
     return raw.hash[raw.current];
   };
 
+  loading = (state) => {
+    const raw = this.raw(state);
+
+    return raw.loading;
+  };
+
   list = (state) => {
     const raw = this.raw(state);
 
@@ -22,7 +28,7 @@ class Selectors {
     const list = this.list(state);
 
     return list.sort(
-      (a, b) => b.startDate - a.startDate
+      (a, b) => b.startDate.valueOf() - a.startDate.valueOf()
     );
   };
   highscores = (state) => {

@@ -40,7 +40,7 @@ Sessions.propTypes = {
   sessions: PropTypes.arrayOf(PropTypes.shape({
     name: PropTypes.string.isRequired,
     score: PropTypes.number.isRequired,
-    startDate: PropTypes.number.isRequired,
+    startDate: PropTypes.object.isRequired,
     status: PropTypes.number.isRequired,
   })).isRequired,
 };

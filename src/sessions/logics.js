@@ -1,9 +1,15 @@
-import { push, LOCATION_CHANGE } from "connected-react-router";
+import { push, replace, LOCATION_CHANGE } from "connected-react-router";
+import { DateTime } from "luxon";
+import { matchPath } from "react-router";
 import { createLogic } from "redux-logic";
 
 import { actions, actionTypes } from "./actions";
-import { route } from "./route";
+import { route as playRoute } from "./route";
 import selectors from "./selectors";
+
+import { fromHex, toHex } from "../common/str2hex";
+
+import { route as landingRoute } from "../landing/route";
 
 const VERSION = 1;
 
@@ -31,6 +37,46 @@ const changeLogic = createLogic({
   }
 });
 
+const locationChangeLogic = createLogic({
+  type: LOCATION_CHANGE,
+  validate({ getState, action }, allow, deny) {
+    const { location } = action.payload;
+
+    const match = matchPath(location.pathname, playRoute());
+
+    if(!match)
+      return deny(action);
+
+    const { id } =  match.params;
+
+    if(typeof id === "undefined")
+      return deny(replace(landingRoute()));
+
+    const [ version, name, timestamp ] = fromHex(id).split("|");
+
+    if(typeof version === "undefined" || typeof name === "undefined" || typeof timestamp === "undefined")
+      return deny(replace(landingRoute()));
+
+    const startDate = DateTime.fromMillis(+timestamp);
+
+    const now = (new Date).valueOf();
+
+    if(!startDate.isValid || startDate.year < 2018 || startDate.valueOf() > now)
+      return deny(replace(landingRoute()));
+
+    allow({
+      ...action,
+
+      infoPayload: { id, name, startDate, version },
+    });
+  },
+  process({ getState, action }, dispatch, done) {
+    dispatch(actions.info(action.infoPayload));
+
+    done();
+  }
+});
+
 const guessLogic = createLogic({
   type: actionTypes.GUESS,
   process({ getState }, dispatch, done) {
@@ -46,7 +92,7 @@ const guessLogic = createLogic({
 
 const playLogic = createLogic({
   type: actionTypes.PLAY,
-  process({ getState, action }, dispatch, done) {
+  validate({ getState, action }, allow, deny) {
     const values = action.payload;
     var { name } = values;
 
@@ -56,12 +102,18 @@ const playLogic = createLogic({
       name = selectors.name(state);
 
       if(!name)
-        return;
+        return deny(replace(landingRoute()));
     }
 
-    const id = btoa(`${VERSION}|${name}|${(new Date).valueOf()}`);
+    allow(action);
+  },
+  process({ getState, action }, dispatch, done) {
+    const values = action.payload;
+    var { name } = values;
 
-    dispatch(push(route(id)));
+    const id = toHex(`${VERSION}|${name}|${(new Date).valueOf()}`);
+
+    dispatch(push(playRoute(id)));
 
     done();
   }
@@ -69,7 +121,6 @@ const playLogic = createLogic({
 
 const timerDecrementLogic = createLogic({
   type: actionTypes.TIMER_DECREMENT,
-
   validate({ getState, action }, allow, deny) {
     const state = getState();
     const timer = selectors.timer(state);
@@ -79,7 +130,6 @@ const timerDecrementLogic = createLogic({
 
     allow(action);
   },
-
   process({ getState }, dispatch, done) {
     done();
   }
@@ -87,6 +137,7 @@ const timerDecrementLogic = createLogic({
 
 export default [
   changeLogic,
+  locationChangeLogic,
   guessLogic,
   playLogic,
   timerDecrementLogic,

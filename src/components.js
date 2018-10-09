@@ -97,10 +97,6 @@ export const Heading = styled(Horizontal)`
 `;
 
 export const SplitView = styled(Horizontal)`
-  height: 100%;
-`;
-
-export const Root = styled(Vertical)`
   font-size: ${sizes.normal};
   height: 100%;
 `;

@@ -1,5 +1,3 @@
-import { DateTime } from "luxon";
-
 export const formatAttempts = (attempts) => {
   if(attempts > 1)
     return `${attempts} attempts`;
@@ -11,7 +9,7 @@ export const formatAttempts = (attempts) => {
 };
 
 export const formatDate = (date) => (
-  DateTime.fromMillis(date).toFormat("yyyy/MM/dd HH:mm")
+  date.toFormat("yyyy/MM/dd HH:mm")
 );
 
 export const formatGuessed = (guessed, words) => (

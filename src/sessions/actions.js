@@ -3,6 +3,7 @@ export const key = "sessions";
 const CHANGE = `${key}/CHANGE`;
 const END = `${key}/END`;
 const GUESS = `${key}/GUESS`;
+const INFO = `${key}/INFO`;
 const PLAY = `${key}/PLAY`;
 const PLAYING = `${key}/PLAYING`;
 
@@ -12,6 +13,7 @@ export const actionTypes = {
   CHANGE,
   END,
   GUESS,
+  INFO,
   PLAY,
   PLAYING,
 
@@ -22,13 +24,16 @@ const change = () => ({ type: CHANGE });
 
 const end = () => ({ type: END });
 
-const guess = (values, options) => ({
+const guess = (values) => ({
   type: GUESS,
 
-  payload: {
-    options,
-    values,
-  },
+  payload: values,
+});
+
+const info = (values) => ({
+  type: INFO,
+
+  payload: values,
 });
 
 const play = (values) => ({
@@ -44,6 +49,7 @@ export const actions = {
   change,
   end,
   guess,
+  info,
 
   play,
   playing,

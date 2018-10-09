@@ -1,6 +1,5 @@
 import { LOCATION_CHANGE } from "connected-react-router";
 import produce from "immer";
-import { matchPath } from "react-router";
 
 import { actionTypes, key } from "./actions";
 import { route as sessionRoute } from "./route";
@@ -25,7 +24,7 @@ function* list(seed) {
 }
 
 function createSession(session) {
-  const words = toArray(list(session.startDate));
+  const words = toArray(list(session.startDate.valueOf()));
 
   return {
     ...session,
@@ -63,9 +62,17 @@ const initialState = {
   hash: {},
   list: [],
   name: null,
+  loading: true,
 };
 
 function reducer(state = initialState, action) {
+  if(action.type == LOCATION_CHANGE) {
+    return produce(state, (draft) => {
+      draft.current = null;
+      draft.loading = true;
+    });
+  }
+
   if(action.type == actionTypes.END) {
     return produce(state, (draft) => {
       const session = draft.hash[state.current];
@@ -78,7 +85,7 @@ function reducer(state = initialState, action) {
   }
 
   if(action.type == actionTypes.GUESS) {
-    const { values: { word } } = action.payload;
+    const { word } = action.payload;
 
     return produce(state, (draft) => {
       const session = draft.hash[state.current];
@@ -97,32 +104,14 @@ function reducer(state = initialState, action) {
     });
   }
 
-  if(action.type == LOCATION_CHANGE) {
-    const { location } = action.payload;
-
-    const match = matchPath(location.pathname, sessionRoute());
-
-    if(!match) {
-      if(!state.current)
-        return state;
-
-      return produce(state, (draft) => {
-        draft.current = null;
-      });
-    }
-
-    const { id } =  match.params;
-    const [ version, name, timestamp ] = atob(id).split("|");
-
-    const startDate = +timestamp;
-
-    if(typeof version === "undefined" || typeof name === "undefined" || typeof startDate === "undefined")
-      return state;
+  if(action.type == actionTypes.INFO) {
+    const { id, name, startDate, version } =  action.payload;
 
     const existing = state.hash[id];
 
     return produce(state, (draft) => {
       draft.current = id;
+      draft.loading = false;
 
       if(!existing) {
         draft.hash[id] = createSession({ name, startDate, version });

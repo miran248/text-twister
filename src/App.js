@@ -1,9 +1,9 @@
 import { ConnectedRouter } from "connected-react-router";
 import React from "react";
 import { connect } from "react-redux";
+import { Redirect, Switch } from "react-router";
 import { Route } from "react-router-dom";
 
-import { Root } from "./components";
 import routes from "./routes";
 import history from "./store/history";
 
@@ -19,10 +19,11 @@ const RouteWithSubRoutes = (route) => (
 
 export default () => (
   <ConnectedRouter history={history}>
-    <Root>
+    <Switch>
     {routes.map((route, i) => (
       <RouteWithSubRoutes key={i} {...route} />
     ))}
-    </Root>
+      <Redirect from="*" to="/"/>
+    </Switch>
   </ConnectedRouter>
 );

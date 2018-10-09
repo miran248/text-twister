@@ -9,6 +9,8 @@ import Entries from "./Entries";
 import GuessForm from "./GuessForm";
 import Words from "./Words";
 
+import Preloader from "../common/Preloader";
+
 import * as c from "../components";
 
 import { route as landingRoute } from "../landing/route";
@@ -84,4 +86,22 @@ const enhance = connect(
   }
 );
 
-export default enhance(View);
+const EnhancedView = enhance(View);
+
+const loading = connect(
+  (state) => ({
+    loading: selectors.loading(state),
+  }),
+);
+
+export default loading(({ loading }) => {
+  if(loading) {
+    return (
+      <Preloader />
+    );
+  }
+
+  return (
+    <EnhancedView />
+  );
+});
