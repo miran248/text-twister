@@ -5,6 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server",
     "build": "NODE_ENV=production webpack",
+    "profile": "NODE_ENV=production webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json build",
     "deploy": "gh-pages -d build"
   },
   "repository": {
@@ -42,6 +43,7 @@
     "mini-css-extract-plugin": "^0.4.3",
     "style-loader": "^0.23.1",
     "webpack": "^4.20.2",
+    "webpack-bundle-analyzer": "^3.0.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9",
     "word-list-json": "^0.2.0"

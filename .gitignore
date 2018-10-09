@@ -2,4 +2,6 @@ build
 cache
 node_modules
 
+stats.json
+
 .DS_Store

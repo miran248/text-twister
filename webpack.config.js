@@ -54,9 +54,9 @@ module.exports = {
         test: /\.js$/,
         exclude: /node_modules/,
         use: [
-          {
-            loader: "echo-loader",
-          },
+          // {
+          //   loader: "echo-loader",
+          // },
           {
             loader: "babel-loader",
             options: {
