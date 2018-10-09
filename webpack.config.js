@@ -17,6 +17,8 @@ const buildPath = path.resolve(rootPath, "build");
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode !== "production";
 
+const publicPath = devMode ? "/" : "/text-twister";
+
 module.exports = {
   target: "web",
 
@@ -39,7 +41,7 @@ module.exports = {
     path: buildPath,
     filename: "[name].[contenthash].js",
     chunkFilename: "[name].[contenthash].js",
-    publicPath: "/",
+    publicPath: publicPath,
   },
 
   optimization: {
