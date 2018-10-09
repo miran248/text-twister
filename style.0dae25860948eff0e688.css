@@ -2,19 +2,19 @@
   font-family: DroidSans;
   font-style: normal;
   font-weight: normal;
-  src: url(/text-twisterassets/fonts/DroidSans.ttf);
+  src: url(/text-twister/assets/fonts/DroidSans.ttf);
 }
 @font-face {
   font-family: DroidSans;
   font-style: normal;
   font-weight: bold;
-  src: url(/text-twisterassets/fonts/DroidSans-Bold.ttf);
+  src: url(/text-twister/assets/fonts/DroidSans-Bold.ttf);
 }
 @font-face {
   font-family: DroidSansMono;
   font-style: normal;
   font-weight: normal;
-  src: url(/text-twisterassets/fonts/DroidSansMono.ttf);
+  src: url(/text-twister/assets/fonts/DroidSansMono.ttf);
 }
 
 @keyframes fader {
