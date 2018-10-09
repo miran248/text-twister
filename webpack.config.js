@@ -3,6 +3,7 @@ const path = require("path");
 
 const webpack = require("webpack");
 
+const { BaseHrefWebpackPlugin } = require("base-href-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
@@ -99,13 +100,15 @@ module.exports = {
     //   },
     // ]),
     new ErrorOverlayPlugin,
+    new MiniCssExtractPlugin({
+      filename: "style.[contenthash].css",
+    }),
+
     new HtmlWebpackPlugin({
       template: path.resolve(sourcePath, "index.html"),
       filename: "./index.html",
       title: "Text Twist",
     }),
-    new MiniCssExtractPlugin({
-      filename: "style.[contenthash].css",
-    }),
+    new BaseHrefWebpackPlugin({ baseHref: publicPath }),
   ],
 };
