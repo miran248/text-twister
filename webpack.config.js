@@ -103,6 +103,9 @@ module.exports = {
     new MiniCssExtractPlugin({
       filename: "style.[contenthash].css",
     }),
+    new webpack.DefinePlugin({
+      "process.env.PUBLIC_URL": `"${publicPath}"`,
+    }),
 
     new HtmlWebpackPlugin({
       template: path.resolve(sourcePath, "index.html"),

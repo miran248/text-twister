@@ -18,7 +18,7 @@ const RouteWithSubRoutes = (route) => (
 );
 
 export default () => (
-  <ConnectedRouter history={history}>
+  <ConnectedRouter history={history} basename={process.env.PUBLIC_URL}>
     <Switch>
     {routes.map((route, i) => (
       <RouteWithSubRoutes key={i} {...route} />
