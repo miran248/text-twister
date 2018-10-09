@@ -5,10 +5,12 @@ const webpack = require("webpack");
 
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const CopyWebpackPlugin = require("copy-webpack-plugin");
+const ErrorOverlayPlugin = require("error-overlay-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 
 const rootPath = path.resolve(__dirname, ".");
-const assetsPath = path.resolve(rootPath, "assets");
+// const assetsPath = path.resolve(rootPath, "assets");
 const sourcePath = path.resolve(rootPath, "src");
 const buildPath = path.resolve(rootPath, "build");
 
@@ -19,18 +21,25 @@ module.exports = {
   target: "web",
 
   mode: mode,
-  devtool: devMode && "cheap-module-eval-source-map",
+  devtool: devMode && "cheap-module-source-map",
 
   context: rootPath,
 
-  entry: {
-    index: "./src/index.js",
+  entry: [
+    "babel-polyfill",
+
+    "./src/index.js",
+  ],
+
+  devServer: {
+    historyApiFallback: true,
   },
 
   output: {
     path: buildPath,
     filename: "[name].[contenthash].js",
     chunkFilename: "[name].[contenthash].js",
+    publicPath: "/",
   },
 
   optimization: {
@@ -52,23 +61,27 @@ module.exports = {
             loader: "babel-loader",
             options: {
               cacheDirectory: path.resolve(rootPath, "cache"),
-              babelrc: false,
-              presets: [
-                "@babel/preset-env",
-                "@babel/preset-react",
-              ],
-              plugins: [
-                "@babel/plugin-proposal-function-sent",
-                "@babel/plugin-proposal-export-namespace-from",
-                "@babel/plugin-syntax-dynamic-import",
-                "@babel/plugin-syntax-import-meta",
-                [ "@babel/plugin-proposal-class-properties", { loose: true } ],
-                "@babel/plugin-proposal-json-strings",
-                "@babel/plugin-transform-arrow-functions",
-              ],
             },
           }
         ],
+      },
+      {
+        test: /\.css$/,
+        use: [
+          "style-loader",
+          MiniCssExtractPlugin.loader,
+          "css-loader",
+        ],
+      },
+      {
+        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
+        use: [{
+          loader: "file-loader",
+          options: {
+            name: "[name].[ext]",
+            outputPath: "assets/fonts/",
+          },
+        }],
       },
     ],
   },
@@ -77,16 +90,20 @@ module.exports = {
     new CleanWebpackPlugin([ "build" ], {
       root: rootPath,
     }),
-    new CopyWebpackPlugin([
-      {
-        from: path.resolve(assetsPath, "**", "*"),
-        to: buildPath,
-      },
-    ]),
+    // new CopyWebpackPlugin([
+    //   {
+    //     from: path.resolve(assetsPath, "**", "*"),
+    //     to: buildPath,
+    //   },
+    // ]),
+    new ErrorOverlayPlugin,
     new HtmlWebpackPlugin({
       template: path.resolve(sourcePath, "index.html"),
       filename: "./index.html",
       title: "Text Twist",
+    }),
+    new MiniCssExtractPlugin({
+      filename: "style.[contenthash].css",
     }),
   ],
 };

@@ -1,0 +1,47 @@
+@font-face {
+  font-family: DroidSans;
+  font-style: normal;
+  font-weight: normal;
+  src: url(../assets/fonts/DroidSans.ttf);
+}
+@font-face {
+  font-family: DroidSans;
+  font-style: normal;
+  font-weight: bold;
+  src: url(../assets/fonts/DroidSans-Bold.ttf);
+}
+@font-face {
+  font-family: DroidSansMono;
+  font-style: normal;
+  font-weight: normal;
+  src: url(../assets/fonts/DroidSansMono.ttf);
+}
+
+@keyframes fader {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+html, body, main#react {
+  height: 100%;
+}
+
+html {
+  font-family: DroidSans;
+	font-size: 20px;
+}
+
+body {
+  margin: 0;
+  overscroll-behavior: none;
+}
+
+* {
+  animation: fader .2s ease-out;
+  box-sizing: border-box;
+  transition: all .1s ease-out;
+}

@@ -1,0 +1,1 @@
+npx babel-node generate-word-list.js > generated-words.json
