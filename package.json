@@ -31,17 +31,18 @@
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.4",
+    "babel-plugin-styled-components": "^1.8.0",
     "babel-polyfill": "^6.26.0",
     "base-href-webpack-plugin": "^2.0.0",
     "clean-webpack-plugin": "^0.1.19",
-    "copy-webpack-plugin": "^4.5.2",
+    "copy-webpack-plugin": "^4.5.3",
     "css-loader": "^1.0.0",
     "echo-loader": "0.0.1",
     "error-overlay-webpack-plugin": "^0.1.5",
     "file-loader": "^2.0.0",
     "gh-pages": "^2.0.1",
     "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.4.3",
+    "mini-css-extract-plugin": "^0.4.4",
     "style-loader": "^0.23.1",
     "webpack": "^4.20.2",
     "webpack-bundle-analyzer": "^3.0.2",
@@ -63,6 +64,6 @@
     "react-router-dom": "^4.3.1",
     "redux": "^4.0.0",
     "redux-logic": "^2.0.1",
-    "styled-components": "^3.4.9"
+    "styled-components": "^3.4.10"
   }
 }
