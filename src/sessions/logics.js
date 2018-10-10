@@ -52,7 +52,19 @@ const locationChangeLogic = createLogic({
     if(typeof id === "undefined")
       return deny(replace(landingRoute()));
 
-    const [ version, name, timestamp ] = fromHex(id).split("|");
+    var decoded;
+
+    try {
+      decoded = fromHex(id);
+    } catch(e) {
+      // TODO: Show it to the user?
+      console.error("Decoding failed with error:", e.message);
+    }
+
+    if(!decoded)
+      return deny(replace(landingRoute()));
+
+    const [ version, name, timestamp ] = decoded.split("|");
 
     if(typeof version === "undefined" || typeof name === "undefined" || typeof timestamp === "undefined")
       return deny(replace(landingRoute()));
@@ -105,15 +117,26 @@ const playLogic = createLogic({
         return deny(replace(landingRoute()));
     }
 
-    allow(action);
+    var id;
+
+    try {
+      id = toHex(`${VERSION}|${name}|${(new Date).valueOf()}`);
+    } catch(e) {
+      // TODO: Show it to the user?
+      console.error("Encoding failed with error:", e.message);
+    }
+
+    if(!id)
+      return deny(replace(landingRoute()));
+
+    allow({
+      ...action,
+
+      playPayload: id,
+    });
   },
   process({ getState, action }, dispatch, done) {
-    const values = action.payload;
-    var { name } = values;
-
-    const id = toHex(`${VERSION}|${name}|${(new Date).valueOf()}`);
-
-    dispatch(push(playRoute(id)));
+    dispatch(push(playRoute(action.playPayload)));
 
     done();
   }
