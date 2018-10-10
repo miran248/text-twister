@@ -88,7 +88,7 @@ function* pickIndex(n, rng) {
 }
 
 function createHint(session) {
-  const threshold = 1; // (1 - session.timer / START_TIMER) / 2;
+  const threshold = (1 - session.timer / START_TIMER) / 2;
 
   if(session.rng() > threshold)
     return undefined;
