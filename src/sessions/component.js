@@ -15,7 +15,7 @@ import * as c from "../components";
 
 import { route as landingRoute } from "../landing/route";
 
-const View = ({ entries, guessed, idle, name, score, status, timer, words, onChange, onSubmit, playAgain }) => (
+const View = ({ entries, guessed, hints, idle, name, score, status, timer, words, onChange, onSubmit, playAgain }) => (
   <c.SplitView withoutAnimation>
     <c.Left masked withoutAnimation>
       <c.Heading withoutAnimation>
@@ -28,7 +28,7 @@ const View = ({ entries, guessed, idle, name, score, status, timer, words, onCha
           <c.H2>Words</c.H2>
           <c.H2>{!idle && formatGuessed(guessed, words.length)}</c.H2>
         </c.Heading>
-        <Words entries={entries} words={words} reveal={status > 1} />
+        <Words entries={entries} hints={hints} words={words} reveal={status > 1} />
       </c.Vertical>
     </c.Left>
     <c.Right masked withoutAnimation>
@@ -71,6 +71,7 @@ const enhance = connect(
   (state) => ({
     entries: selectors.entries(state),
     guessed: selectors.guessed(state),
+    hints: selectors.hints(state),
     idle: selectors.idle(state),
     name: selectors.name(state),
     score: selectors.score(state),

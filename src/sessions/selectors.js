@@ -44,6 +44,11 @@ class Selectors {
 
     return session.entries;
   };
+  hints = (state) => {
+    const session = this.current(state);
+
+    return session.hints;
+  };
   guessed = (state) => {
     const session = this.current(state);
 
