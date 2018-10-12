@@ -5,8 +5,7 @@
   "scripts": {
     "start": "NODE_ENV=development webpack-dev-server",
     "build": "NODE_ENV=production webpack",
-    "profile": "NODE_ENV=production webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json build",
-    "deploy": "gh-pages -d build"
+    "profile": "NODE_ENV=production webpack --profile --json > stats.json && webpack-bundle-analyzer stats.json build"
   },
   "repository": {
     "type": "git",
@@ -40,7 +39,6 @@
     "echo-loader": "0.0.1",
     "error-overlay-webpack-plugin": "^0.1.5",
     "file-loader": "^2.0.0",
-    "gh-pages": "^2.0.1",
     "html-webpack-plugin": "^3.2.0",
     "mini-css-extract-plugin": "^0.4.4",
     "style-loader": "^0.23.1",

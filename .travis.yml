@@ -1,0 +1,27 @@
+sudo: false
+
+language: node_js
+
+branches:
+  only:
+  - master
+
+cache:
+  directories:
+    - "node_modules"
+
+script:
+- npm run build
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN  # Set in the settings page of your repository, as a secure variable
+  keep-history: true
+  local-dir: build
+  on:
+    branch: master
+
+notifications:
+  email:
+    on_failure: change
