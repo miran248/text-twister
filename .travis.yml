@@ -4,14 +4,17 @@ language: node_js
 
 branches:
   only:
-  - master
+    - master
+
+before_install:
+  - cd client
 
 cache:
   directories:
     - "node_modules"
 
 script:
-- npm run build
+  - yarn build
 
 deploy:
   provider: pages

@@ -1,8 +1,7 @@
 {
-  "name": "text-twister",
+  "name": "@packages/common",
   "version": "1.0.0",
-  "private": true,
-  "description": "react + redux game",
+  "module": "./index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/miran248/text-twister.git"
@@ -12,10 +11,5 @@
   "bugs": {
     "url": "https://github.com/miran248/text-twister/issues"
   },
-  "homepage": "https://github.com/miran248/text-twister#readme",
-  "workspaces": [
-    "client",
-    "packages/*",
-    "services/*"
-  ]
+  "homepage": "https://github.com/miran248/text-twister#readme"
 }

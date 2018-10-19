@@ -8,9 +8,11 @@ import * as c from "../components";
 const renderEntry = (entry, i) => {
   const score = formatScore(entry.score);
 
+  const key = `${entry.word}|${entry.timer}|${entry.valid}|${entry.duplicate}`;
+
   if(entry.duplicate) {
     return (
-      <React.Fragment key={entry.date}>
+      <React.Fragment key={key}>
         <c.Grid.Cell c={1} bold={false}>{`Already tried "${entry.word}"`}</c.Grid.Cell>
         <c.Grid.Cell c={2} bold={false}>{score}</c.Grid.Cell>
       </React.Fragment>
@@ -19,7 +21,7 @@ const renderEntry = (entry, i) => {
 
   if(entry.valid) {
     return (
-      <React.Fragment key={entry.date}>
+      <React.Fragment key={key}>
         <c.Grid.Cell c={1} bold={false} green light>{`Found "${entry.word}", yay!`}</c.Grid.Cell>
         <c.Grid.Cell c={2} bold={false} green light>{score}</c.Grid.Cell>
       </React.Fragment>
@@ -27,7 +29,7 @@ const renderEntry = (entry, i) => {
   }
 
   return (
-    <React.Fragment key={entry.date}>
+    <React.Fragment key={key}>
       <c.Grid.Cell c={1} bold={false} red light>{`Nope, "${entry.word}" is not on the list`}</c.Grid.Cell>
       <c.Grid.Cell c={2} bold={false} red light>{score}</c.Grid.Cell>
     </React.Fragment>

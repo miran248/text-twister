@@ -15,7 +15,7 @@ import * as c from "../components";
 
 import { route as landingRoute } from "../landing/route";
 
-const View = ({ entries, guessed, hints, idle, name, score, status, timer, words, onChange, onSubmit, playAgain }) => (
+const View = ({ entries, guessed, hints, idle, name, score, status, timer, words, onChange, onSubmit, share, playAgain }) => (
   <c.SplitView withoutAnimation>
     <c.Left masked withoutAnimation>
       <c.Heading withoutAnimation>
@@ -60,6 +60,7 @@ const View = ({ entries, guessed, hints, idle, name, score, status, timer, words
       {status > 1 && (
         <c.Cell flex={0} horizontal large spaced>
           <c.StyledLink to={landingRoute()}>Go back</c.StyledLink>
+          <c.StyledButton onClick={share}>Share</c.StyledButton>
           <c.StyledButton onClick={playAgain}>Try again!</c.StyledButton>
         </c.Cell>
       )}
@@ -83,6 +84,7 @@ const enhance = connect(
     onChange: actions.change,
     onSubmit: actions.guess,
 
+    share: actions.share,
     playAgain: actions.play,
   }
 );

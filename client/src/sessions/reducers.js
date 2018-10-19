@@ -62,7 +62,7 @@ function createEntry(session, word) {
   );
 
   return {
-    date: (new Date).valueOf(),
+    timer: session.timer,
     duplicate,
     score: duplicate ? 0 : valid
       ? Math.ceil(word.length * session.timer / START_TIMER * 2)
@@ -200,6 +200,20 @@ function reducer(state = initialState, action) {
 
       session.status = 1;
     });
+  }
+
+  if(action.type == actionTypes.RESTORE) {
+    const session =  action.payload;
+
+    console.log("restoring", session);
+
+    return state;
+
+    // return produce(state, (draft) => {
+    //   const session = draft.hash[state.current];
+    //
+    //   session.status = 1;
+    // });
   }
 
   if(action.type == actionTypes.TIMER_DECREMENT) {

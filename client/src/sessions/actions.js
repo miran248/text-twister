@@ -7,6 +7,9 @@ const INFO = `${key}/INFO`;
 const PLAY = `${key}/PLAY`;
 const PLAYING = `${key}/PLAYING`;
 
+const RESTORE = `${key}/RESTORE`;
+const SHARE = `${key}/SHARE`;
+
 export const TIMER_DECREMENT = "TIMER_DECREMENT";
 
 export const actionTypes = {
@@ -16,6 +19,9 @@ export const actionTypes = {
   INFO,
   PLAY,
   PLAYING,
+
+  RESTORE,
+  SHARE,
 
   TIMER_DECREMENT,
 };
@@ -43,6 +49,13 @@ const play = (values) => ({
 });
 const playing = () => ({ type: PLAYING });
 
+const restore = (session) => ({
+  type: RESTORE,
+
+  payload: session,
+});;
+const share = () => ({ type: SHARE });
+
 const timerDecrement = () => ({ type: TIMER_DECREMENT });
 
 export const actions = {
@@ -53,6 +66,9 @@ export const actions = {
 
   play,
   playing,
+
+  restore,
+  share,
 
   timerDecrement,
 };

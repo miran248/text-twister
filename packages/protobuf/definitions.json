@@ -1,0 +1,23 @@
+{
+  "nested": {
+    "Entry": {
+      "fields": {
+        "timer": { "type": "uint32", "id": 1, "rule": "required" },
+        "word": { "type": "string", "id": 2, "rule": "required" }
+      }
+    },
+    "Id": {
+      "fields": {
+        "version": { "type": "uint32", "id": 1, "rule": "required" },
+        "timestamp": { "type": "uint64", "id": 2, "rule": "required" },
+        "name": { "type": "string", "id": 3, "rule": "required" }
+      }
+    },
+    "Session": {
+      "fields": {
+        "id": { "type": "Id", "id": 1, "rule": "required" },
+        "entries": { "type": "Entry", "id": 2, "rule": "repeated" }
+      }
+    }
+  }
+}
