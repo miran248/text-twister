@@ -1,4 +1,3 @@
-import Joi from "joi";
 import Koa from "koa";
 import cors from "@koa/cors";
 import bodyParser from "koa-bodyparser";
@@ -8,20 +7,16 @@ import { fromHex } from "@packages/common/str2hex";
 import { Session } from "@packages/protobuf";
 
 import * as sessions from "./sessions";
-
-const sessionsSchema = Joi.object().keys({
-  data: Joi.string().required(),
-})
+import * as validators from "./validators";
 
 const app = new Koa;
+const router = new Router;
 
 const listSessions = async () => {
   const cursor = await sessions.list();
 
   return cursor.toArray();
 };
-
-const router = new Router;
 
 router.get("/sessions", async (context, next) => {
   const items = await listSessions();
@@ -32,7 +27,7 @@ router.get("/sessions", async (context, next) => {
 router.post("/sessions", async (context, next) => {
   const { request } = context;
 
-  const result = Joi.validate(request.body, sessionsSchema);
+  const result = validators.sessionsPost(request.body);
 
   if(result.error) {
     context.throw(400, `Validation failed with error: ${result.error.message}`);
@@ -62,7 +57,6 @@ app
     allowMethods: [ "GET", "POST" ],
   }))
   .use(bodyParser())
-  .use(router.routes())
-  .use(router.allowedMethods());
+  .use(router.routes());
 
 app.listen(8080);
