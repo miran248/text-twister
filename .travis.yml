@@ -30,7 +30,7 @@ deploy:
   skip-cleanup: true
   github-token: $GITHUB_TOKEN
   keep-history: true
-  local-dir: build
+  local-dir: client/build
   on:
     branch: master
 
