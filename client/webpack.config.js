@@ -18,6 +18,8 @@ const buildPath = path.resolve(rootPath, "build");
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode !== "production";
 
+const backendUrl = process.env.BACKEND_URL || "http://localhost:3000";
+
 const publicPath = devMode ? "/" : "/text-twister/";
 
 module.exports = {
@@ -104,6 +106,7 @@ module.exports = {
       filename: "style.[contenthash].css",
     }),
     new webpack.DefinePlugin({
+      "process.env.BACKEND_URL": `"${backendUrl}"`,
       "process.env.PUBLIC_URL": `"${publicPath}"`,
     }),
 

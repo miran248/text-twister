@@ -14,6 +14,9 @@ import { route as landingRoute } from "../landing/route";
 
 const VERSION = 1;
 
+const backendUrl = process.env.BACKEND_URL;
+const sessionsPath = `${backendUrl}/sessions`;
+
 const generateId = (version, name, timestamp) => (
   toHex(Id.encode({ version, name, timestamp, }).finish())
 );
@@ -69,7 +72,7 @@ const fetchSessionsLogic = createLogic({
   },
   async process(context, dispatch, done) {
     try {
-      const response = await fetch("http://localhost:3000/sessions");
+      const response = await fetch(sessionsPath);
 
       if(!response.ok) {
         const message = await response.text();
@@ -122,7 +125,7 @@ const saveSessionLogic = createLogic({
 
       console.log("saveSessionLogic", compressed);
 
-      const response = await fetch("http://localhost:3000/sessions", {
+      const response = await fetch(sessionsPath, {
         method: "POST",
         body: compressed,
         headers: {
