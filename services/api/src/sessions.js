@@ -1,20 +1,29 @@
 import { sessionsPromise } from "./db";
 
-export const add = async (data) => {
-  const c = await sessionsPromise;
+export const add = async (session) => {
+  const sessions = await sessionsPromise;
 
-  const found = await c.findOne({ data });
+  const found = await sessions.findOne({ _id: session.hash });
 
   if(found)
-    return found;
+    return;
 
-  return c.insertOne({
-    data,
+  await sessions.insertOne({
+    _id: session.hash,
+
+    entries: session.entries,
   });
 };
 
+// TODO: Cache items
 export const list = async () => {
-  const c = await sessionsPromise;
+  const sessions = await sessionsPromise;
+  const cursor = await sessions.find();
+  const items = await cursor.toArray();
 
-  return c.find();
+  return items.map((item) => ({
+    entries: item.entries,
+
+    hash: item._id,
+  }));
 };

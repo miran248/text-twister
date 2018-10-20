@@ -6,3 +6,4 @@ const root = protobuf.Root.fromJSON(definitions);
 
 export const Id = root.lookupType("Id");
 export const Session = root.lookupType("Session");
+export const Sessions = root.lookupType("Sessions");

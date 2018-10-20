@@ -7,8 +7,13 @@ const INFO = `${key}/INFO`;
 const PLAY = `${key}/PLAY`;
 const PLAYING = `${key}/PLAYING`;
 
-const RESTORE = `${key}/RESTORE`;
-const SHARE = `${key}/SHARE`;
+const FETCH_SESSIONS = `${key}/FETCH_SESSIONS`;
+const FETCH_SESSIONS_SUCCESS = `${key}/FETCH_SESSIONS_SUCCESS`;
+const FETCH_SESSIONS_FAILURE = `${key}/FETCH_SESSIONS_FAILURE`;
+
+const SAVE_SESSION = `${key}/SAVE_SESSION`;
+const SAVE_SESSION_SUCCESS = `${key}/SAVE_SESSION_SUCCESS`;
+const SAVE_SESSION_FAILURE = `${key}/SAVE_SESSION_FAILURE`;
 
 export const TIMER_DECREMENT = "TIMER_DECREMENT";
 
@@ -20,8 +25,13 @@ export const actionTypes = {
   PLAY,
   PLAYING,
 
-  RESTORE,
-  SHARE,
+  FETCH_SESSIONS,
+  FETCH_SESSIONS_SUCCESS,
+  FETCH_SESSIONS_FAILURE,
+
+  SAVE_SESSION,
+  SAVE_SESSION_SUCCESS,
+  SAVE_SESSION_FAILURE,
 
   TIMER_DECREMENT,
 };
@@ -49,12 +59,31 @@ const play = (values) => ({
 });
 const playing = () => ({ type: PLAYING });
 
-const restore = (session) => ({
-  type: RESTORE,
+const fetchSessions = () => ({ type: FETCH_SESSIONS });
+const fetchSessionsSuccess = (sessions) => ({
+  type: FETCH_SESSIONS_SUCCESS,
+
+  payload: sessions,
+});
+const fetchSessionsFailure = (error) => ({
+  type: FETCH_SESSIONS_FAILURE,
+
+  error: true,
+  payload: error,
+});
+
+const saveSession = () => ({ type: SAVE_SESSION });
+const saveSessionSuccess = (session) => ({
+  type: SAVE_SESSION_SUCCESS,
 
   payload: session,
-});;
-const share = () => ({ type: SHARE });
+});
+const saveSessionFailure = (error) => ({
+  type: SAVE_SESSION_FAILURE,
+
+  error: true,
+  payload: error,
+});
 
 const timerDecrement = () => ({ type: TIMER_DECREMENT });
 
@@ -67,8 +96,13 @@ export const actions = {
   play,
   playing,
 
-  restore,
-  share,
+  fetchSessions,
+  fetchSessionsSuccess,
+  fetchSessionsFailure,
+
+  saveSession,
+  saveSessionSuccess,
+  saveSessionFailure,
 
   timerDecrement,
 };

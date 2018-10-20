@@ -17,11 +17,22 @@ class Selectors {
     return raw.loading;
   };
 
+  fetchSessionsStatus = (state) => {
+    const raw = this.raw(state);
+
+    return raw.fetchSessionsStatus;
+  };
+  saveSessionStatus = (state) => {
+    const raw = this.raw(state);
+
+    return raw.saveSessionStatus;
+  };
+
   list = (state) => {
     const raw = this.raw(state);
 
     return raw.list.map(
-      (id) => raw.hash[id]
+      (hash) => raw.hash[hash]
     );
   };
   recents = (state) => {
@@ -60,7 +71,7 @@ class Selectors {
     if(!session)
       return this.raw(state).name;
 
-    return session.name;
+    return session.id.name;
   };
   score = (state) => {
     const session = this.current(state);

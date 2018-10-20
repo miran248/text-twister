@@ -4,7 +4,7 @@ import { matchPath } from "react-router";
 import { createLogic } from "redux-logic";
 
 import { fromHex, toHex } from "@packages/common/str2hex";
-import { Id, Session } from "@packages/protobuf";
+import { Id, Session, Sessions } from "@packages/protobuf";
 
 import { actions, actionTypes } from "./actions";
 import { route as playRoute } from "./route";
@@ -18,38 +18,19 @@ const generateId = (version, name, timestamp) => (
   toHex(Id.encode({ version, name, timestamp, }).finish())
 );
 
-const parseId = (id) => Id.toObject(Id.decode(fromHex(id)));
+const parseId = (hash) => Id.toObject(Id.decode(fromHex(hash)));
 
 const compressSession = (session) => (
-  toHex(Session.encode({
-    id: {
-      version: session.version,
-      name: session.name,
-      timestamp: session.startDate.valueOf(),
-    },
+  Session.encode({
     entries: session.entries.map(
       (entry) => ({
         word: entry.word,
         timer: entry.timer,
       })
     ),
-  }).finish())
+    hash: session.hash,
+  }).finish()
 );
-
-const restoreSession = (hex) => {
-  const session = Session.toObject(Session.decode(fromHex(hex)));
-  const { id } = session;
-
-  return {
-    ...session,
-
-    hash: generateId(id.version, id.name, id.timestamp),
-  };
-};
-
-const restored = restoreSession("0a10080110d4a3efcde62c1a054d6972616e1207083212037065611207083312036361741207083412037a69701207083512036c6f7412070835120374656112080836120462657374120808371204766f69641208083812047475726e1209083a12057072696d651209083c1205706f776572");
-
-console.log(actions.restore(restored));
 
 const changeLogic = createLogic({
   type: actionTypes.CHANGE,
@@ -72,6 +53,95 @@ const changeLogic = createLogic({
     cancelled$.subscribe(() => {
       clearInterval(interval);
     });
+  }
+});
+
+const fetchSessionsLogic = createLogic({
+  type: actionTypes.FETCH_SESSIONS,
+  validate({ getState, action }, allow, deny) {
+    const state = getState();
+    const status = selectors.fetchSessionsStatus(state);
+
+    if(status == 1)
+      return deny();
+
+    allow(action);
+  },
+  async process(context, dispatch, done) {
+    try {
+      const response = await fetch("http://localhost:3000/sessions");
+
+      if(!response.ok) {
+        const message = await response.text();
+
+        throw new Error(message);
+      }
+
+      const buffer = await response.arrayBuffer();
+      const array = new Uint8Array(buffer);
+
+      const sessions = Sessions.toObject(Sessions.decode(array));
+
+      const items = sessions.sessions.map((item) => {
+        const id = parseId(item.hash);
+
+        return {
+          ...item,
+
+          id,
+          startDate: DateTime.fromMillis(id.timestamp),
+        };
+      });
+
+      dispatch(actions.fetchSessionsSuccess(items));
+    } catch(e) {
+      dispatch(actions.fetchSessionsFailure(e));
+    }
+
+    done();
+  }
+});
+
+const saveSessionLogic = createLogic({
+  type: actionTypes.SAVE_SESSION,
+  validate({ getState, action }, allow, deny) {
+    const state = getState();
+    const status = selectors.saveSessionStatus(state);
+
+    if(status == 1)
+      return deny();
+
+    allow(action);
+  },
+  async process({ getState }, dispatch, done) {
+    const state = getState();
+    const session = selectors.current(state);
+
+    try {
+      const compressed = compressSession(session);
+
+      console.log("saveSessionLogic", compressed);
+
+      const response = await fetch("http://localhost:3000/sessions", {
+        method: "POST",
+        body: compressed,
+        headers: {
+          "Content-Type": "application/x-protobuf",
+        }
+      });
+
+      if(!response.ok) {
+        const message = await response.text();
+
+        throw new Error(message);
+      }
+
+      dispatch(actions.saveSessionSuccess(session));
+    } catch(e) {
+      dispatch(actions.saveSessionFailure(e));
+    };
+
+    done();
   }
 });
 
@@ -100,16 +170,18 @@ const locationChangeLogic = createLogic({
 
     const match = matchPath(location.pathname, playRoute());
 
+    console.log("match", match);
+
     if(!match)
       return deny(action);
 
-    const { id } =  match.params;
+    const { hash } =  match.params;
 
-    if(typeof id === "undefined")
+    if(typeof hash === "undefined")
       return deny(replace(landingRoute()));
 
     const decoded = decodeGuard(
-      () => parseId(id)
+      () => parseId(hash)
     );
 
     console.log(decoded);
@@ -117,10 +189,7 @@ const locationChangeLogic = createLogic({
     if(!decoded)
       return deny(replace(landingRoute()));
 
-    const { version, name, timestamp } = decoded;
-
-    if(typeof version === "undefined" || typeof name === "undefined" || typeof timestamp === "undefined")
-      return deny(replace(landingRoute()));
+    const { version, timestamp } = decoded;
 
     const startDate = DateTime.fromMillis(+timestamp);
 
@@ -132,7 +201,11 @@ const locationChangeLogic = createLogic({
     allow({
       ...action,
 
-      infoPayload: { id, name, startDate, version },
+      infoPayload: {
+        hash,
+        id: decoded,
+        startDate,
+      },
     });
   },
   process({ getState, action }, dispatch, done) {
@@ -170,37 +243,21 @@ const playLogic = createLogic({
         return deny(replace(landingRoute()));
     }
 
-    const id = encodeGuard(
+    const hash = encodeGuard(
       () => generateId(VERSION, name, (new Date).valueOf())
     );
 
-    if(!id)
+    if(!hash)
       return deny(replace(landingRoute()));
 
     allow({
       ...action,
 
-      playPayload: id,
+      playPayload: hash,
     });
   },
   process({ getState, action }, dispatch, done) {
     dispatch(push(playRoute(action.playPayload)));
-
-    done();
-  }
-});
-
-const shareLogic = createLogic({
-  type: actionTypes.SHARE,
-  process({ getState }, dispatch, done) {
-    const state = getState();
-    const session = selectors.current(state);
-
-    const share = encodeGuard(
-      () => compressSession(session)
-    );
-
-    console.log(share);
 
     done();
   }
@@ -224,9 +281,10 @@ const timerDecrementLogic = createLogic({
 
 export default [
   changeLogic,
+  fetchSessionsLogic,
+  saveSessionLogic,
   locationChangeLogic,
   guessLogic,
   playLogic,
-  shareLogic,
   timerDecrementLogic,
 ];

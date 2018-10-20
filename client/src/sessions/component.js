@@ -15,7 +15,20 @@ import * as c from "../components";
 
 import { route as landingRoute } from "../landing/route";
 
-const View = ({ entries, guessed, hints, idle, name, score, status, timer, words, onChange, onSubmit, share, playAgain }) => (
+const renderSaveButton = (status) => {
+  if(status == 3)
+    return "Failed Saving";
+
+  if(status == 2)
+    return "Saved";
+
+  if(status == 1)
+    return "Saving..";
+
+  return "Save";
+};
+
+const View = ({ entries, guessed, hints, idle, name, score, status, timer, words, saveSessionStatus, onChange, onSubmit, save, playAgain }) => (
   <c.SplitView withoutAnimation>
     <c.Left masked withoutAnimation>
       <c.Heading withoutAnimation>
@@ -60,7 +73,7 @@ const View = ({ entries, guessed, hints, idle, name, score, status, timer, words
       {status > 1 && (
         <c.Cell flex={0} horizontal large spaced>
           <c.StyledLink to={landingRoute()}>Go back</c.StyledLink>
-          <c.StyledButton onClick={share}>Share</c.StyledButton>
+          <c.StyledButton onClick={save} disabled={saveSessionStatus == 1}>{renderSaveButton(saveSessionStatus)}</c.StyledButton>
           <c.StyledButton onClick={playAgain}>Try again!</c.StyledButton>
         </c.Cell>
       )}
@@ -79,12 +92,13 @@ const enhance = connect(
     status: selectors.status(state),
     timer: selectors.timer(state),
     words: selectors.words(state),
+    saveSessionStatus: selectors.saveSessionStatus(state),
   }),
   {
     onChange: actions.change,
     onSubmit: actions.guess,
 
-    share: actions.share,
+    save: actions.saveSession,
     playAgain: actions.play,
   }
 );

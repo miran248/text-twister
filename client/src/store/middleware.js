@@ -1,4 +1,3 @@
-import axios from "axios";
 import { routerMiddleware } from "connected-react-router";
 import { compose, applyMiddleware } from "redux";
 import { createLogicMiddleware } from "redux-logic";
@@ -6,9 +5,7 @@ import { createLogicMiddleware } from "redux-logic";
 import history from "./history";
 import logics from "./logics";
 
-const logicMiddleware = createLogicMiddleware(logics, {
-  httpClient: axios,
-});
+const logicMiddleware = createLogicMiddleware(logics);
 
 const middleware = applyMiddleware(
   routerMiddleware(history),

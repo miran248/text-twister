@@ -1,7 +1,8 @@
 import styled from "styled-components";
 
 import {
-  pastel
+  pastel,
+  vibrant
 } from "./colors";
 
 import buttonMixin from "./mixins/button";
@@ -23,6 +24,12 @@ export const StyledButton = styled.button`
   ${disabledMixin}
   ${formElementMixin}
 `;
+export const BlueButton = styled(StyledButton)`
+  background-color: ${vibrant.blue};
+`;
 export const GreenButton = styled(StyledButton)`
   background-color: ${pastel.green};
+`;
+export const RedButton = styled(StyledButton)`
+  background-color: ${vibrant.red};
 `;

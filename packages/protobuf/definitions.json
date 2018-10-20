@@ -15,8 +15,13 @@
     },
     "Session": {
       "fields": {
-        "id": { "type": "Id", "id": 1, "rule": "required" },
-        "entries": { "type": "Entry", "id": 2, "rule": "repeated" }
+        "entries": { "type": "Entry", "id": 1, "rule": "repeated" },
+        "hash": { "type": "string", "id": 2, "rule": "required" }
+      }
+    },
+    "Sessions": {
+      "fields": {
+        "sessions": { "type": "Session", "id": 1, "rule": "repeated" }
       }
     }
   }

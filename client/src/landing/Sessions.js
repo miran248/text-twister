@@ -20,7 +20,7 @@ const renderSession = (session, i) => {
 
   return (
     <React.Fragment key={session.startDate}>
-      <c.Grid.Cell c={1} bold={false}>{session.name}</c.Grid.Cell>
+      <c.Grid.Cell c={1} bold={false}>{session.id.name}</c.Grid.Cell>
       <c.Grid.Cell c={2} bold={false}>{startDate}</c.Grid.Cell>
       <c.Grid.Cell c={3} bold={false} {...color} light>{score}</c.Grid.Cell>
     </React.Fragment>
@@ -38,7 +38,9 @@ const Sessions = ({ sessions }) => (
 
 Sessions.propTypes = {
   sessions: PropTypes.arrayOf(PropTypes.shape({
-    name: PropTypes.string.isRequired,
+    id: PropTypes.shape({
+      name: PropTypes.string.isRequired,
+    }).isRequired,
     score: PropTypes.number.isRequired,
     startDate: PropTypes.object.isRequired,
     status: PropTypes.number.isRequired,
