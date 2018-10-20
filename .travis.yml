@@ -9,9 +9,7 @@ branches:
 before_install:
   - cd client
 
-cache:
-  directories:
-    - "node_modules"
+cache: yarn
 
 env:
   - BACKEND_URL=$BACKEND_URL
