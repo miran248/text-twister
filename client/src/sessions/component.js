@@ -73,7 +73,7 @@ const View = ({ entries, guessed, hints, idle, name, score, status, timer, words
       {status > 1 && (
         <c.Cell flex={0} horizontal large spaced>
           <c.StyledLink to={landingRoute()}>Go back</c.StyledLink>
-          <c.StyledButton onClick={save} disabled={saveSessionStatus == 1}>{renderSaveButton(saveSessionStatus)}</c.StyledButton>
+          {/*<c.StyledButton onClick={save} disabled={saveSessionStatus == 1}>{renderSaveButton(saveSessionStatus)}</c.StyledButton>*/}
           <c.StyledButton onClick={playAgain}>Try again!</c.StyledButton>
         </c.Cell>
       )}

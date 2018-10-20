@@ -28,7 +28,7 @@ class View extends Component {
 
     const { fetchSessions } = props;
 
-    fetchSessions();
+    // fetchSessions();
   }
 
   render() {
@@ -39,20 +39,20 @@ class View extends Component {
         <c.Left masked withoutAnimation>
           <c.Heading withoutAnimation>
             <c.Horizontal>
-              {fetchSessionsStatus < 3 && (
+              {/*fetchSessionsStatus < 3 && (
                 <c.BlueButton
                   title={renderFetchButton(fetchSessionsStatus)}
                   disabled={fetchSessionsStatus == 1}
                   onClick={fetchSessions}
                 >&#8635;</c.BlueButton>
-              )}
-              {fetchSessionsStatus == 3 && (
+              )*/}
+              {/*fetchSessionsStatus == 3 && (
                 <c.RedButton
                   title={renderFetchButton(fetchSessionsStatus)}
                   disabled={fetchSessionsStatus == 1}
                   onClick={fetchSessions}
                 >&#8635;</c.RedButton>
-              )}
+              )*/}
             </c.Horizontal>
             <c.H1 withoutAnimation>TEXT</c.H1>
           </c.Heading>
