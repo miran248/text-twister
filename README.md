@@ -34,7 +34,7 @@ Tools are required, versions aren't
 cd client && yarn start
 
 # backend
-docker-container up
+docker-compose up
 ```
 
 ### Screenshots
