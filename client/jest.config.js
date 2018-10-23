@@ -8,5 +8,5 @@ module.exports = {
   name: "client",
   displayName: "client",
 
-  setupTestFrameworkScriptFile: "./setupTest.js",
+  setupTestFrameworkScriptFile: "<rootDir>/setupTest.js",
 };

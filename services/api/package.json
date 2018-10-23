@@ -15,7 +15,9 @@
     "build": "webpack"
   },
   "devDependencies": {
-    "echo-loader": "0.0.1"
+    "echo-loader": "0.0.1",
+    "webpack": "^4.21.0",
+    "webpack-cli": "^3.1.2"
   },
   "dependencies": {
     "@koa/cors": "^2.2.2",
