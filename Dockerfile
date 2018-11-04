@@ -1,8 +1,8 @@
 FROM node:10.12.0-alpine AS base
-ENV NODE_ENV=production
 WORKDIR /text-twister
 
 FROM base AS dependencies
+COPY babel.config.base.js .
 COPY package.json .
 COPY yarn.lock .
 COPY packages/common packages/common
@@ -11,6 +11,8 @@ COPY services/api services/api
 
 # RUN yarn install --non-interactive --cache-folder .yarn-cache; rm -Rf .yarn-cache
 RUN yarn install --non-interactive
+
+ENV NODE_ENV=production
 
 WORKDIR /text-twister/services/api
 RUN yarn build

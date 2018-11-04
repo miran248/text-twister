@@ -12,6 +12,7 @@ import Words from "./Words";
 import Preloader from "../common/Preloader";
 
 import * as c from "../components";
+import { backendAvailable } from "../config";
 
 import { route as landingRoute } from "../landing/route";
 
@@ -73,7 +74,9 @@ const View = ({ entries, guessed, hints, idle, name, score, status, timer, words
       {status > 1 && (
         <c.Cell flex={0} horizontal large spaced>
           <c.StyledLink to={landingRoute()}>Go back</c.StyledLink>
-          {/*<c.StyledButton onClick={save} disabled={saveSessionStatus == 1}>{renderSaveButton(saveSessionStatus)}</c.StyledButton>*/}
+          {backendAvailable && (
+            <c.StyledButton onClick={save} disabled={saveSessionStatus == 1}>{renderSaveButton(saveSessionStatus)}</c.StyledButton>
+          )}
           <c.StyledButton onClick={playAgain}>Try again!</c.StyledButton>
         </c.Cell>
       )}

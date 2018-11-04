@@ -8,6 +8,7 @@ import { actions as sessionActions } from "../sessions/actions";
 import sessionSelectors from "../sessions/selectors";
 
 import * as c from "../components";
+import { backendAvailable } from "../config";
 
 const renderFetchButton = (status) => {
   if(status == 3)
@@ -28,7 +29,8 @@ class View extends Component {
 
     const { fetchSessions } = props;
 
-    // fetchSessions();
+    if(backendAvailable)
+      fetchSessions();
   }
 
   render() {
@@ -39,20 +41,20 @@ class View extends Component {
         <c.Left masked withoutAnimation>
           <c.Heading withoutAnimation>
             <c.Horizontal>
-              {/*fetchSessionsStatus < 3 && (
+              {backendAvailable && fetchSessionsStatus < 3 && (
                 <c.BlueButton
                   title={renderFetchButton(fetchSessionsStatus)}
                   disabled={fetchSessionsStatus == 1}
                   onClick={fetchSessions}
                 >&#8635;</c.BlueButton>
-              )*/}
-              {/*fetchSessionsStatus == 3 && (
+              )}
+              {backendAvailable && fetchSessionsStatus == 3 && (
                 <c.RedButton
                   title={renderFetchButton(fetchSessionsStatus)}
                   disabled={fetchSessionsStatus == 1}
                   onClick={fetchSessions}
                 >&#8635;</c.RedButton>
-              )*/}
+              )}
             </c.Horizontal>
             <c.H1 withoutAnimation>TEXT</c.H1>
           </c.Heading>

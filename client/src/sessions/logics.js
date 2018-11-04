@@ -10,11 +10,12 @@ import { actions, actionTypes } from "./actions";
 import { route as playRoute } from "./route";
 import selectors from "./selectors";
 
+import { backendUrl } from "../config";
+
 import { route as landingRoute } from "../landing/route";
 
 const VERSION = 1;
 
-const backendUrl = process.env.BACKEND_URL;
 const sessionsPath = `${backendUrl}/sessions`;
 
 const generateId = (version, name, timestamp) => (

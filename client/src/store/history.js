@@ -1,5 +1,7 @@
 import { createBrowserHistory } from "history";
 
+import { publicUrl } from "../config";
+
 export default createBrowserHistory({
-  // basename: process.env.PUBLIC_URL,
+  // basename: publicUrl,
 });

@@ -34,6 +34,7 @@
     "babel-loader": "^8.0.4",
     "babel-polyfill": "^6.26.0",
     "clean-webpack-plugin": "^0.1.19",
+    "cz-conventional-changelog": "^2.1.0",
     "jest": "^23.5.0",
     "jest-cli": "^23.5.0"
   },
@@ -41,5 +42,10 @@
     "client",
     "packages/*",
     "services/*"
-  ]
+  ],
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
 }

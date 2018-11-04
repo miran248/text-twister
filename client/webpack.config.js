@@ -18,7 +18,7 @@ const buildPath = path.resolve(rootPath, "build");
 const mode = process.env.NODE_ENV || "development";
 const devMode = mode !== "production";
 
-const backendUrl = process.env.BACKEND_URL || "http://localhost:3000";
+const backendUrl = devMode ? "http://localhost:3000" : process.env.BACKEND_URL;
 
 const publicPath = devMode ? "/" : "/text-twister/";
 
